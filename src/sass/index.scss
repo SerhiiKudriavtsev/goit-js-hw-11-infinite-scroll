@@ -1,0 +1,39 @@
+@import './common';
+// @import './example';
+@import './search-form';
+@import './photo-card.scss';
+
+.container {
+  max-width: 1200px;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+    padding: 0;
+}
+
+.load-more {
+  display: block;
+  padding: 10px;
+  margin: 10px auto 10px auto;
+  color: #0000EE;
+  border-radius: 5px;
+  border: 2px outset #0000EE;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 10px 10px 8px 0px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+
+  &:hover {
+      transform: scale(1.03);
+      transition-duration: 500ms;
+    }
+
+  &.is-hidden {
+    display: none;
+  }
+}

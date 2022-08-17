@@ -1,0 +1,28 @@
+.search-form {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border: 2.2px outset #0000EE;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 10px 10px 8px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+
+.search-input {
+  border-radius: 5px;
+  margin-right: 10px;
+  padding: 10px;
+  color: #0000EE;
+  border: 2.2px outset #0000EE;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  color: #0000EE;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 2px outset #0000EE;
+}

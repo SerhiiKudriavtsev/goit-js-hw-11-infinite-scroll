@@ -1,0 +1,29 @@
+
+.photo-item {
+  display: flex;
+  flex-direction: column;
+  width: calc((100% - 45px) / 4);
+  border-radius: 5px;
+  // flex-wrap: wrap;
+  // background-color: brown;
+  border: 2.2px outset #0000EE;
+  box-shadow: 10px 10px 8px 0px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.photo-item:hover {
+  transform: scale(1.03);
+  transition-duration: 500ms;
+}
+
+.info{
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  font-size: 14px;
+}
+
+// .info-item {
+//   flex-direction: column;
+// }
+
