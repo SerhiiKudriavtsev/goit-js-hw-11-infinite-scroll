@@ -22,17 +22,18 @@ export async function backendRequest(name, pageN) {
         }
         
         if (response.data.total !== 0 && pageN <= numberOfPages) {
-          Notiflix.Notify.success(`"Download page ${pageN} out of ${numberOfPages}."`);
+          Notiflix.Notify.success(
+            `"Download page ${pageN} out of ${numberOfPages}."`
+          );
           // refs.loadMoreBtn.classList.remove('is-hidden');
           if (response.data.total !== 0 && pageN >= totalPages) {
             refs.loadMoreBtn.classList.add('is-hidden');
             Notiflix.Notify.info(
               "We're sorry, but you've reached the end of search results."
             );
-            pageNumber -= 1;
-          } 
-        return response.data;
-      } else {
+          }
+          return response.data;
+        } else {
           throw new Error('Error fetching data');
         }
     } catch (error) {
