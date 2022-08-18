@@ -1,15 +1,13 @@
 
-import { backendRequest } from './js/backendRequest';
-import photoCardTpl from './templates/photo-card.hbs';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import debounce from 'lodash.debounce';
+import { backendRequest } from './js/backendRequest';
+import photoCardTpl from './templates/photo-card.hbs';
 
-export let pageNumber;
-export const perPage = 40;
-const DEBOUNCE_DELAY = 500;
+const DEBOUNCE_DELAY = 100;
 
-export const refs = {
+const refs = {
   searchForm: document.querySelector('#search-form'),
   inputForm: document.querySelector('.search-input'),
   searchBtn: document.querySelector('.btn'),
@@ -29,11 +27,11 @@ window.addEventListener('scroll', debounce(onScroll, DEBOUNCE_DELAY));
 
 async function onScroll() {
   if (
-    document.documentElement.scrollHeight - document.documentElement.scrollTop <=
-    document.documentElement.clientHeight + 10
-    // window.innerHeight + window.pageYOffset >=
+    scrollY + innerHeight >= document.body.scrollHeight - 500
+    //OR   document.documentElement.scrollHeight - document.documentElement.scrollTop <=
+    // (document.documentElement.clientHeight + 100)
+    //OR   window.innerHeight + window.pageYOffset >=
     // document.body.offsetHeight - 10
-    // scrollY + innerHeight >= document.body.scrollHeight - 10
   ) {
     await onLoadMore();
   } else return;
@@ -41,17 +39,17 @@ async function onScroll() {
 
 async function searchFn(e) {
   e.preventDefault();
-  pageNumber = 1;
+  backendRequest.pageNumder = 1;
+  backendRequest.numberOfPages = 1;
   refs.gallery.innerHTML = '';
   onLoadMore();
 }
 
 async function onLoadMore() {
   const searchQery = refs.inputForm.value.trim();
-  const backendFeedback = await backendRequest(searchQery, pageNumber);
+  const backendFeedback = await backendRequest.fetch(searchQery);
   renderPhotoCards(backendFeedback); 
   scrollBy();
-  pageNumber += 1;
   await lightbox.refresh();
 }
 
@@ -69,11 +67,3 @@ function scrollBy() {
     behavior: 'smooth',
   });
 }
-
-// function scrollBy() {
-//   let infScroll = new InfiniteScroll('.gallery', {
-//     path: '.pagination__next',
-//     append: '.post',
-//     history: false,
-//   });
-// }

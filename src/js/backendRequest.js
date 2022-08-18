@@ -1,45 +1,55 @@
 import axios from 'axios';
-// const axios = require('axios').default;
 import Notiflix from 'notiflix';
-import { refs, pageNumber, perPage } from '../index'
+Notiflix.Notify.init({
+  width: '280px',
+  position: 'center-top'
+});
+export const backendRequest = {
+  pageNumder: 1,
+  perPage: 40,
+  totalPages: 1,
+  numberOfPages: 1,
+  BASE_URL: 'https://pixabay.com/api/',
+  PIXABAY_KEY: '29091734-9e049dbec053396241aa2e5c2',
 
-export async function backendRequest(name, pageN) {
-  const BASE_URL = 'https://pixabay.com/api/';
-  const PIXABAY_KEY = '29091734-9e049dbec053396241aa2e5c2';
-  if (name) {
-    try {
-      const response = await axios.get(
-        `${BASE_URL}?key=${PIXABAY_KEY}&q=${name}&image_type=photo&page=${pageN}&per_page=${perPage}&orientation=horizontal&safesearch=true`
+  fetch: async function (searchWord) {
+    if (this.pageNumder > this.numberOfPages) {
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
       );
-      const totalPages = response.data.total / perPage;
-      const numberOfPages = Math.ceil(totalPages);
+    }
+    if (searchWord && this.pageNumder <= this.numberOfPages) {
+      try {
+        const response = await axios.get(
+          `${this.BASE_URL}?key=${this.PIXABAY_KEY}&q=${searchWord}&image_type=photo&page=${this.pageNumder}&per_page=${this.perPage}&orientation=horizontal&safesearch=true`
+        );
+        this.totalPages = response.data.total / this.perPage;
+        this.numberOfPages = Math.ceil(this.totalPages);
 
-      
-      if (response.data.total !== 0 && pageN === 1) {
-        Notiflix.Notify.success(
-          `"Hooray! We found ${response.data.total} images on ${numberOfPages} pages."`
+        if (response.data.total !== 0 && this.pageNumder === 1) {
+          Notiflix.Notify.success(
+            `"Hooray! We found ${response.data.total} images on ${this.numberOfPages} pages."`
           );
         }
-        
-        if (response.data.total !== 0 && pageN <= numberOfPages) {
+
+        if (
+          response.data.total !== 0 &&
+          this.pageNumder <= this.numberOfPages
+        ) {
           Notiflix.Notify.success(
-            `"Download page ${pageN} out of ${numberOfPages}."`
+            `"Download page ${this.pageNumder} out of ${this.numberOfPages}."`
           );
-          // refs.loadMoreBtn.classList.remove('is-hidden');
-          if (response.data.total !== 0 && pageN >= totalPages) {
-            refs.loadMoreBtn.classList.add('is-hidden');
-            Notiflix.Notify.info(
-              "We're sorry, but you've reached the end of search results."
-            );
-          }
+
+          this.pageNumder += 1;
           return response.data;
         } else {
           throw new Error('Error fetching data');
         }
-    } catch (error) {
-      Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
+      } catch (error) {
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+      }
     }
-  }
-}
+  },
+};
